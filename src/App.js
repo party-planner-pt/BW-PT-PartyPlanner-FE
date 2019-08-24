@@ -1,12 +1,11 @@
 import React from 'react';
 import './App.css';
-import FormikSignUp from './components/signup-login/SignUp'
+import FullWidthTabs from './components/signup-login/SignupLoginTab';
 
 function App() {
   return (
     <div className="App">
-      <h1>POTLUCKING</h1>
-     <FormikSignUp />
+     <FullWidthTabs />
     </div>
   );
 }
