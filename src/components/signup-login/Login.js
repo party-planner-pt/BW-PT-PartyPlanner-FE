@@ -3,11 +3,10 @@ import { withFormik, Formik } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
 import TextField from "@material-ui/core/TextField";
-import * as EmailValidator from "email-validator";
 
 const LoginForm = () => (
   <Formik
-    initialValues={{ email: "", password: "" }}
+    initialValues={{ email: "", password: "", confirmPassword: "" }}
     onSubmit={(values, { setSubmitting }) => {
       setTimeout(() => {
         console.log("Logging in", values);
@@ -15,15 +14,17 @@ const LoginForm = () => (
       }, 500);
     }}
     validationSchema={Yup.object().shape({
-      // firstname: Yup.string().required("Required"),
-      // lastname: Yup.string().required("Required"),
       email: Yup.string()
         .email()
-        .required("Required"),
+        .required("Email is Required"),
       password: Yup.string()
         .required("No password provided.")
         .min(8, "Password is too short - should be 8 chars minimum.")
-        .matches(/(?=.*[0-9])/, "Password must contain a number.")
+        .matches(/(?=.*[0-15])/, "Password must contain a number."),
+      confirmPassword: Yup.string()
+        .oneOf([Yup.ref("password"), null])
+        .required("confirmed password must match.")
+        .matches(/(?=.*[0-15])/, "Password must contain a number.")
     })}
   >
     {props => {
@@ -51,7 +52,7 @@ const LoginForm = () => (
           {errors.email && touched.email && (
             <div className="feedback">{errors.email}</div>
           )}
-          <label htmlFor="email">Password</label>
+          <label htmlFor="password">Password</label>
           <input
             name="password"
             type="password"
@@ -61,8 +62,23 @@ const LoginForm = () => (
             onBlur={handleBlur}
             className={errors.password && touched.password && "error"}
           />
-          {errors.password && touched.password && (
+          {errors.email && touched.email && (
             <div className="feedback">{errors.password}</div>
+          )}
+          <label htmlFor="confirmPassword">Password</label>
+          <input
+            name="confirmPassword"
+            type="password"
+            placeholder="Please confirm your password"
+            value={values.confirmPassword}
+            onChange={handleChange}
+            onBlur={handleBlur}
+            className={
+              errors.confirmPassword && touched.confirmPassword && "error"
+            }
+          />
+          {errors.confirmPassword && touched.confirmPassword && (
+            <div className="feedback">{errors.confirmPassword}</div>
           )}
           <button type="submit" disabled={isSubmitting}>
             Login
