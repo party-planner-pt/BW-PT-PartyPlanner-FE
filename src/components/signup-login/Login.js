@@ -5,7 +5,6 @@ import axios from "axios";
 import TextField from "@material-ui/core/TextField";
 import { SignUpButton, SignUpWrapper, StyledForm } from "./SignUpLoginStyles";
 
-
 const Login = () => (
   <div>
     <h1>Login</h1>
@@ -38,11 +37,11 @@ const Login = () => (
           handleBlur
         } = props;
         return (
-          <StyledForm onSubmit={handleSubmit}>
-            <SignUpWrapper>
+          <StyledForm>
+            <SignUpWrapper onSubmit={handleSubmit}>
               <label htmlFor="username">username</label>
               <TextField
-                label="username"
+                name="username"
                 type="text"
                 placeholder="Enter your username"
                 value={values.username}
@@ -52,7 +51,6 @@ const Login = () => (
                 margin="normal"
                 variant="outlined"
               />
-
               {errors.username && touched.username && (
                 <div className="feedback">{errors.username}</div>
               )}
@@ -65,6 +63,8 @@ const Login = () => (
                 onChange={handleChange}
                 onBlur={handleBlur}
                 className={errors.password && touched.password && "error"}
+                margin="normal"
+                variant="outlined"
               />
               {errors.password && touched.password && (
                 <div className="feedback">{errors.password}</div>
