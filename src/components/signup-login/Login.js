@@ -14,26 +14,22 @@ const Login = () => {
           <TextField
             id="outlined-username"
             label="Username"
-            // className={classes.textField}
             margin="normal"
             variant="outlined"
           />
           <TextField
             id="outlined-password-input"
             label="Password"
-            // className={classes.textField}
             type="password"
             autoComplete="current-password"
             margin="normal"
             variant="outlined"
-          />
-          
+          /> 
         </SignUpWrapper>
         <SignUpButton variant="contained" color="primary">
             Login
-          </SignUpButton>
-          <p>Not yet registered? Sign up</p>
-       
+        </SignUpButton>
+          <p>Not yet registered? Sign up</p>    
       </StyledForm>
     </div>
   )
