@@ -5,15 +5,7 @@ import axios from "axios";
 import TextField from "@material-ui/core/TextField";
 import { SignUpButton, SignUpWrapper, StyledForm } from "./SignUpLoginStyles";
 
-
 const Login = () => {
-
-  useEffect(() => {
-    if(status) {
-      setPassword(status)
-    }
-  }, [status]);
-  
   return (
     <div>
       <h1>Login</h1>
