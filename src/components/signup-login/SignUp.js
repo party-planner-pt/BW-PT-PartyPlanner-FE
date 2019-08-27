@@ -14,7 +14,6 @@ const SignUp = () => {
           <TextField
             id="outlined-name"
             label="Full Name"
-            // className={classes.textField}
             margin="normal"
             variant="outlined"
           />
@@ -28,7 +27,6 @@ const SignUp = () => {
           <TextField
             id="outlined-email-input"
             label="Email"
-            // className={classes.textField}
             type="email"
             name="email"
             autoComplete="email"
