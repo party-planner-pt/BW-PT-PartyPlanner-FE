@@ -5,10 +5,7 @@ import axios from "axios";
 import TextField from "@material-ui/core/TextField";
 import { SignUpButton, SignUpWrapper, StyledForm } from "./SignUpLoginStyles";
 
-
 const Login = () => {
-
-
   return (
     <div>
       <h1>Login</h1>
