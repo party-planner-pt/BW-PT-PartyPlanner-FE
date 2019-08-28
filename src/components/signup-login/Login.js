@@ -1,11 +1,30 @@
 import React, { useState, useEffect } from "react";
-import { withFormik, Formik } from "formik";
+import { Formik } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
 import TextField from "@material-ui/core/TextField";
 import { SignUpButton, SignUpWrapper, StyledForm } from "./SignUpLoginStyles";
 
-const Login = () => {
+const Login = ({ values, status }) => {
+  const [token, setStatus] = useState([]);
+
+  useEffect(() => {
+    if (token) {
+      setStatus([...token, status]);
+    }
+  }, [status]);
+
+  const handleSubmit = (values, { setStatus });
+
+  axios
+    .post("https://potluck-planner-bw.herokuapp.com/users/login")
+    .then(res => {
+      console.log("handleSubmit: then: res: ", res);
+      setStatus(res.data);
+      localStorage.setItem("token", token);
+    })
+    .catch(err => console.error("handleSubmit: catch: err: ", err));
+
   return (
     <div>
       <h1>Login</h1>
@@ -25,16 +44,7 @@ const Login = () => {
             .required("No password provided.")
             .min(8, "Password is too short - should be 8 chars minimum.")
             .matches(/(?=.*[0-15])/, "Password must contain a number.")
-        })
-      }
-      // handleSubmit(values, { setStatus }) {
-      //   axios
-      //     .post("https://potluck-planner-bw.herokuapp.com/users/login", values) 
-      //     .then(res => {
-      //       console.log("res.data", res.data)
-      //       setStatus(res.data)})
-      //     .catch(err => console.error(err))
-      // } 
+        })}
       >
         {props => {
           const {
@@ -46,6 +56,7 @@ const Login = () => {
             handleChange,
             handleBlur
           } = props;
+
           return (
             <StyledForm onSubmit={handleSubmit}>
               <SignUpWrapper>
@@ -75,6 +86,8 @@ const Login = () => {
                   onChange={handleChange}
                   onBlur={handleBlur}
                   className={errors.password && touched.password && "error"}
+                  margin="normal"
+                  variant="outlined"
                 />
                 {errors.password && touched.password && (
                   <div className="feedback">{errors.password}</div>
@@ -93,7 +106,6 @@ const Login = () => {
         }}
       </Formik>
     </div>
-)}
-
-
+  );
+};
 export default Login;
