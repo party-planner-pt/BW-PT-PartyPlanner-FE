@@ -11,7 +11,8 @@ const SignUp = props => {
   const {
     touched,
     errors,
-    handleSubmit
+    handleSubmit,
+    values
   } = props;
   
   return (
@@ -20,14 +21,15 @@ const SignUp = props => {
         <SignUpWrapper>
           <Field
             type="text"
-            name="name"
+            name="full_name"
             component={TextField}
             id="outlined-name"
             label="Full Name"
             margin="normal"
             variant="outlined"
           />
-          {touched.name && errors.name && <p className="error">{errors.name}</p>}
+          {touched.name}
+      
           
           <Field
             type="text"
@@ -38,7 +40,7 @@ const SignUp = props => {
             margin="normal"
             variant="outlined"
           />
-          {touched.username && errors.username && <p className="error">{errors.username}</p>}
+          {touched.username}
 
           <Field
             type="email"
@@ -49,7 +51,7 @@ const SignUp = props => {
             margin="normal"
             variant="outlined"
           />
-          {touched.email && errors.email && <p className="error">{errors.email}</p>}
+          {touched.email}
   
 
           <Field
@@ -61,7 +63,7 @@ const SignUp = props => {
             margin="normal"
             variant="outlined"
           />
-          {touched.password && errors.password && <p className="error">{errors.password}</p>}
+          {touched.password}
           
         </SignUpWrapper>
         <button variant="contained" color="primary" component="button">
@@ -73,9 +75,9 @@ const SignUp = props => {
   )
 }
 const FormikSignUp = withFormik ({
-  mapPropsToValues({name, username, email, password}) {
+  mapPropsToValues({full_name, username, email, password}) {
     return {
-      name: name || "",
+      full_name: full_name || "",
       username: username || "",
       email: email || "",
       password: password || ""
@@ -83,13 +85,14 @@ const FormikSignUp = withFormik ({
   },
 
   validationSchema: Yup.object().shape({
-    name: Yup.string().required('required'),
-    username: Yup.string().required('required'), // must not contain spaces
-    email: Yup.string().email().required('required'),
-    password: Yup.string().required('required'), 
+    full_name: Yup.string().required(),
+    username: Yup.string().required(), // must not contain spaces
+    email: Yup.string().email().required(),
+    password: Yup.string().required(), 
   }),
 
   handleSubmit(values, { setStatus }) {
+    console.log(values)
     axios
       .post('https://potluck-planner-bw.herokuapp.com/users/register', values)
       .then(res => {
