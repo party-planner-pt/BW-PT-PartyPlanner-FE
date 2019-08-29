@@ -9,6 +9,8 @@ import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
 import FormikSignUp from "./SignUp";
 import FormikLogin from "./Login";
+import { Route, Link } from "react-router-dom";
+import Login from "./Login";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -67,8 +69,13 @@ export default function FullWidthTabs() {
           variant="fullWidth"
           aria-label="full width tabs example"
         >
-          <Tab label="Sign Up" />
-          <Tab label="Login" />
+          <Link to='/signup'>
+            <Tab label="Sign Up" />
+          </Link>
+          {/* <Link to='/login'> */}
+            <Tab label="Login"/>
+          {/* </Link> */}
+          
         </Tabs>
       </AppBar>
       <SwipeableViews
@@ -83,6 +90,7 @@ export default function FullWidthTabs() {
           <FormikLogin />
         </TabPanel>
       </SwipeableViews>
+      
     </div>
   );
 }

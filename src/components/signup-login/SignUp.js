@@ -7,7 +7,6 @@ import { SignUpButton, SignUpWrapper, StyledForm } from "./SignUpLoginStyles";
 import Button from "@material-ui/core/Button";
 
 const SignUp = props => {
-  const { touched, errors, handleSubmit } = props;
 
   const {
     touched,
@@ -90,8 +89,9 @@ const FormikSignUp = withFormik ({
     password: Yup.string().required(), 
   }),
 
-  handleSubmit(values, { setStatus }) {
+  handleSubmit(values, { setStatus, resetForm }) {
     console.log(values)
+    resetForm();
     axios
       .post("https://potluck-planner-bw.herokuapp.com/users/register", values)
       .then(res => {
