@@ -5,7 +5,8 @@ import axios from "axios";
 import TextField from "@material-ui/core/TextField";
 import { SignUpButton, SignUpWrapper, StyledForm } from "./SignUpLoginStyles";
 
-const Login = () => {
+
+const Login = (props) => {
   const [thetokens, setToken] = useState({ username: "", password: "" });
 
   const handleChange = event => {
@@ -15,7 +16,6 @@ const Login = () => {
   const handleSubmit = event => {
     event.preventDefault();
   };
-
   return (
     <div>
       <h1>Login</h1>
@@ -30,6 +30,7 @@ const Login = () => {
             .then(res => {
               console.log(res);
               localStorage.setItem("token", res.data.token);
+              props.history.push("/dashboard")
             })
             .catch(err => console.log(err.response));
         }}

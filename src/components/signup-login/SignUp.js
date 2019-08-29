@@ -7,25 +7,28 @@ import { SignUpButton, SignUpWrapper, StyledForm } from "./SignUpLoginStyles";
 import Button from "@material-ui/core/Button";
 
 const SignUp = props => {
-  const { touched, errors, handleSubmit } = props;
 
+  const {
+    touched,
+    handleSubmit,
+  } = props;
+  
   return (
     <div>
       <StyledForm onSubmit={handleSubmit}>
         <SignUpWrapper>
           <Field
             type="text"
-            name="name"
+            name="full_name"
             component={TextField}
             id="outlined-name"
             label="Full Name"
             margin="normal"
             variant="outlined"
           />
-          {touched.name && errors.name && (
-            <p className="error">{errors.name}</p>
-          )}
-
+          {touched.name}
+      
+          
           <Field
             type="text"
             name="username"
@@ -35,9 +38,7 @@ const SignUp = props => {
             margin="normal"
             variant="outlined"
           />
-          {touched.username && errors.username && (
-            <p className="error">{errors.username}</p>
-          )}
+          {touched.username}
 
           <Field
             type="email"
@@ -48,9 +49,8 @@ const SignUp = props => {
             margin="normal"
             variant="outlined"
           />
-          {touched.email && errors.email && (
-            <p className="error">{errors.email}</p>
-          )}
+          {touched.email}
+  
 
           <Field
             type="password"
@@ -61,9 +61,8 @@ const SignUp = props => {
             margin="normal"
             variant="outlined"
           />
-          {touched.password && errors.password && (
-            <p className="error">{errors.password}</p>
-          )}
+          {touched.password}
+          
         </SignUpWrapper>
         <button variant="contained" color="primary" component="button">
           Sign Up
@@ -71,12 +70,12 @@ const SignUp = props => {
         <p>Already registered? Login</p>
       </StyledForm>
     </div>
-  );
-};
-const FormikSignUp = withFormik({
-  mapPropsToValues({ name, username, email, password }) {
+  )
+}
+const FormikSignUp = withFormik ({
+  mapPropsToValues({full_name, username, email, password}) {
     return {
-      name: name || "",
+      full_name: full_name || "",
       username: username || "",
       email: email || "",
       password: password || ""
@@ -84,20 +83,21 @@ const FormikSignUp = withFormik({
   },
 
   validationSchema: Yup.object().shape({
-    name: Yup.string().required("required"),
-    username: Yup.string().required("required"), // must not contain spaces
-    email: Yup.string()
-      .email()
-      .required("required"),
-    password: Yup.string().required("required")
+    full_name: Yup.string().required(),
+    username: Yup.string().required(), // must not contain spaces
+    email: Yup.string().email().required(),
+    password: Yup.string().required(), 
   }),
 
-  handleSubmit(values, { setStatus }) {
+  handleSubmit(values, { setStatus, resetForm }) {
+    console.log(values)
+    resetForm();
     axios
       .post("https://potluck-planner-bw.herokuapp.com/users/register", values)
       .then(res => {
-        console.log(res.data);
-        setStatus(res.data);
+        console.log(res.data)
+        setStatus(res.data)
+        alert('Registration Successful!')
       })
       .catch(err => console.error(err));
   }

@@ -6,14 +6,21 @@ import Dashboard from "./components/create-potluck/user-dashboard/UserDashboard"
 import Volunteer from "./components/Volunteer";
 import { Route } from "react-router-dom";
 import Login from "./components/signup-login/Login";
+import SignUp from "./components/signup-login/SignUp";
+import FormikCreateFoodList from "./components/create-potluck/CreateFoodList";
+import SignupLoginTab from './components/signup-login/SignupLoginTab';
+
+
 function App() {
   return (
     <div className="App">
-      <FullWidthTabs />
+      {/* <FullWidthTabs /> */}
       {/* <Dashboard />
       <CreatePotluckForm />
       <Volunteer /> */}
-      <Route path="/login" component={Login} />
+      {/* <FormikCreateFoodList /> */}
+      <Route exact path="/login" component={Login} />
+      
     </div>
   );
 }
