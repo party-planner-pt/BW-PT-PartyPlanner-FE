@@ -1,11 +1,13 @@
-import React from 'react'
-import { Field, withFormik } from 'formik';
-import * as Yup from 'yup'
-import axios from 'axios'
-import { TextField } from 'formik-material-ui';
-import { SignUpWrapper, StyledForm } from './SignUpLoginStyles'
+import React from "react";
+import { Field, withFormik, Form } from "formik";
+import * as Yup from "yup";
+import axios from "axios";
+import { TextField } from "formik-material-ui";
+import { SignUpButton, SignUpWrapper, StyledForm } from "./SignUpLoginStyles";
+import Button from "@material-ui/core/Button";
 
 const SignUp = props => {
+  const { touched, errors, handleSubmit } = props;
 
   const {
     touched,
@@ -14,7 +16,7 @@ const SignUp = props => {
   
   return (
     <div>
-      <StyledForm onSubmit={handleSubmit}> 
+      <StyledForm onSubmit={handleSubmit}>
         <SignUpWrapper>
           <Field
             type="text"
@@ -64,7 +66,7 @@ const SignUp = props => {
           
         </SignUpWrapper>
         <button variant="contained" color="primary" component="button">
-            Sign Up
+          Sign Up
         </button>
         <p>Already registered? Login</p>
       </StyledForm>
@@ -78,7 +80,7 @@ const FormikSignUp = withFormik ({
       username: username || "",
       email: email || "",
       password: password || ""
-    }
+    };
   },
 
   validationSchema: Yup.object().shape({
@@ -91,15 +93,14 @@ const FormikSignUp = withFormik ({
   handleSubmit(values, { setStatus }) {
     console.log(values)
     axios
-      .post('https://potluck-planner-bw.herokuapp.com/users/register', values)
+      .post("https://potluck-planner-bw.herokuapp.com/users/register", values)
       .then(res => {
         console.log(res.data)
         setStatus(res.data)
         alert('Registration Successful!')
       })
-      .catch(err => console.error(err))
+      .catch(err => console.error(err));
   }
-})(SignUp)
+})(SignUp);
 
-export default FormikSignUp
-
+export default FormikSignUp;

@@ -1,40 +1,37 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
 import TextField from "@material-ui/core/TextField";
 import { SignUpButton, SignUpWrapper, StyledForm } from "./SignUpLoginStyles";
 
-const Login = ({ values, status }) => {
-  const [token, setStatus] = useState([]);
 
-  useEffect(() => {
-    if (token) {
-      setStatus([...token, status]);
-    }
-  }, [status]);
+const Login = () => {
+  const [thetokens, setToken] = useState({ username: "", password: "" });
 
-  const handleSubmit = (values, { setStatus });
+  const handleChange = event => {
+    setToken({ ...thetokens, [event.target.name]: event.target.value });
+  };
 
-  axios
-    .post("https://potluck-planner-bw.herokuapp.com/users/login")
-    .then(res => {
-      console.log("handleSubmit: then: res: ", res);
-      setStatus(res.data);
-      localStorage.setItem("token", token);
-    })
-    .catch(err => console.error("handleSubmit: catch: err: ", err));
-
+  const handleSubmit = event => {
+    event.preventDefault();
+  };
   return (
     <div>
       <h1>Login</h1>
       <Formik
         initialValues={{ username: "", password: "" }}
         onSubmit={(values, { setSubmitting }) => {
-          setTimeout(() => {
-            console.log("Logging in", values);
-            setSubmitting(false);
-          }, 500);
+          axios
+            .post(
+              "https://potluck-planner-bw.herokuapp.com/users/login",
+              values
+            )
+            .then(res => {
+              console.log(res);
+              localStorage.setItem("token", res.data.token);
+            })
+            .catch(err => console.log(err.response));
         }}
         validationSchema={Yup.object().shape({
           username: Yup.string("Provide a Username").required(
