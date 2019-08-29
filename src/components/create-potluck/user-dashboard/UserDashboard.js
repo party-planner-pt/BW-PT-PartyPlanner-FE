@@ -1,10 +1,16 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Button from "@material-ui/core/Button";
 
-const Dashboard = () => {
+const Events = props => {
+  // const [eventlists, setEvent]=useState([]);
+
+  // useEffect( ) => {
+  //   axios.get("https://potluck-planner-bw.herokuapp.com/users/1/events", )
+  // }
   const useStyles = makeStyles(theme => ({
     root: {
       padding: theme.spacing(3, 2)
@@ -30,7 +36,7 @@ const Dashboard = () => {
           You are not currently a participant in any meal trains
         </Typography>
         <Typography component="p">
-          To organize a new meal train, click{" "}
+          To organize a potluck event, click
           <Button
             variant="contained"
             color="primary"
@@ -39,9 +45,19 @@ const Dashboard = () => {
             Get Started
           </Button>
         </Typography>
+        <Typography component="p">
+          To create a potluck meal, click
+          <Button
+            variant="contained"
+            color="primary"
+            className={classes.button}
+          >
+            Create Meal
+          </Button>
+        </Typography>
       </Paper>
     </div>
   );
 };
 
-export default Dashboard;
+export default Events;
