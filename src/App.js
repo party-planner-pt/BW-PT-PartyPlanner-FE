@@ -6,9 +6,10 @@ import Dashboard from "./components/create-potluck/user-dashboard/UserDashboard"
 import Volunteer from "./components/Volunteer";
 import { Route } from "react-router-dom";
 import Login from "./components/signup-login/Login";
-import SignUp from "./components/signup-login/SignUp";
-import FormikCreateFoodList from "./components/create-potluck/CreateFoodList";
-import SignupLoginTab from './components/signup-login/SignupLoginTab';
+import UserDashboard from './components/create-potluck/user-dashboard/UserDashboard';
+import Potluck from './components/potluck-page/Potluck';
+import CreateFoodList from './components/create-potluck/CreateFoodList'
+
 
 
 function App() {
@@ -19,7 +20,11 @@ function App() {
       <CreatePotluckForm />
       <Volunteer /> */}
       {/* <FormikCreateFoodList /> */}
-      <Route exact path="/login" component={Login} />
+      <Route exact path="/users/login" component={Login} />
+      <Route exact path="/createfoodlist" component={CreateFoodList} />
+      <Route exact path="/dashboard" component={UserDashboard} />
+      <Route exact path="create" component={CreatePotluckForm} />
+      <Route path="event/:id" component={Potluck} />
       
     </div>
   );

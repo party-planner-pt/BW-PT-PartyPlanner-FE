@@ -1,78 +1,85 @@
 import React, { useEffect, useState } from 'react';
-import { Field, Form, withFormik } from 'formik';
+import { Formik, Form, Field, FieldArray } from 'formik';
 import * as Yup from 'yup';
 import axios from 'axios';
 import { TextField } from 'formik-material-ui';
-import { FoodButton, CreateListWrapper, ListFormWrapper, ColumnOne  } from './CreatePotluckStyles';
 import "../../App.css";
 import AddCircleOutline from '@material-ui/icons/AddCircleOutline';
 
-const CreateFoodList = props => {
-  const {
-    handleSubmit,
-    status
-  } = props
-
-  const [foodItems, setFoodItems] = useState([])
-
-  useEffect(() => {
-    if(status) {
-      setFoodItems([...foodItems, status])
-    }
-  }, [status])
-
+const CreateFoodList = () => {
   return (
-    <CreateListWrapper >
-      <h2>What foods, drinks, or other items would you like people to bring?</h2>
-      <Form onSubmit={handleSubmit}>
-        <ListFormWrapper>
-          <ColumnOne>
-            <Field
-              type="text"
-              name="recipe_name"
-              component={TextField}
-              id="outlined-name"
-              label="Item"
-              margin="normal"
-              variant="outlined"
-            />
-            <FoodButton className="submit-food-button food-button">Submit List</FoodButton>
-          </ColumnOne>
-          <AddCircleOutline />
-        </ListFormWrapper>
-      </Form>
-        {foodItems.map(foodItem => {
-          return (
-            <p key={foodItem.id}>{foodItem.recipe_name}</p>
-          )
-        })}
-    </CreateListWrapper >
-  )
-}
+  //   const [thetokens, setToken] = useState({ username: "", password: "" });
 
-const FormikCreateFoodList = withFormik ({
-  mapPropsToValues({recipe_name}) {
-    return {
-      recipe_name: recipe_name || "",
-    }
-  },
+  // const handleChange = event => {
+  //   setToken({ ...thetokens, [event.target.name]: event.target.value });
+  // };
 
-  validationSchema: Yup.object().shape({
-    recipe_name: Yup.string().required(),
-  }),
+  // const handleSubmit = event => {
+  //   event.preventDefault();
+  // };
+  <div>
+    <Formik
+      initialValues={{ food: [] }}
+      onSubmit={values => {
+        setTimeout(() => {
+          alert(JSON.stringify(values, null, 2));
+        }, 500);
+        axios
+            .post(
+              // "https://potluck-planner-bw.herokuapp.com/users/login",
+              values
+            )
+            .then(res => {
+              console.log(res);
+              // localStorage.setItem("token", res.data.token);
+              // props.history.push("/createfoodlist")
+            })
+            .catch(err => console.log(err.response));  
+      }
+      }
+      render={({ values }) => (
+        <Form>
+          <FieldArray
+            name="food"
+            render={arrayHelpers => (
+              <div>
+                {values.food && values.food.length > 0 ? (
+                  values.food.map((foodItem, index) => (
+                    <div key={index}>
+                      <Field 
+                        name={`food.${index}`}
+                        component={TextField}
+                      />
+                      <button
+                        type="button"
+                        onClick={() => arrayHelpers.remove(index)} // remove a friend from the list
+                      >
+                        -
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => arrayHelpers.insert(index, "")} // insert an empty string at a position
+                      >
+                        +
+                      </button>
+                    </div>
+                  ))
+                ) : (
+                  <button type="button" onClick={() => arrayHelpers.push("")}>
+                    {/* show this when user has removed all friends from the list */}
+                    Add a food setFoodItems
+                  </button>
+                )}
+                <div>
+                  <button type="submit">Submit</button>
+                </div>
+              </div>
+            )}
+          />
+        </Form>
+      )}
+    />
+  </div>
+)};
 
-  handleSubmit(values, { setStatus, resetForm }) {
-    console.log("Values:",values)
-    resetForm();
-    axios
-      .post('https://potluck-planner-bw.herokuapp.com/events/19/recipes', values) 
-      .then(res => {
-        console.log("res.data", res.data)
-        setStatus(res.data)
-      
-      })
-      .catch(err => console.log("DAMN", err))
-  }
-})(CreateFoodList)
-
-export default FormikCreateFoodList
+export default CreateFoodList
