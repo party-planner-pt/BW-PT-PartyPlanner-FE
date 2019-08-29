@@ -1,18 +1,15 @@
 import React from 'react'
-import { Field, withFormik, Form } from 'formik';
+import { Field, withFormik } from 'formik';
 import * as Yup from 'yup'
 import axios from 'axios'
 import { TextField } from 'formik-material-ui';
-import { SignUpButton, SignUpWrapper, StyledForm } from './SignUpLoginStyles'
-import Button from "@material-ui/core/Button";
+import { SignUpWrapper, StyledForm } from './SignUpLoginStyles'
 
 const SignUp = props => {
 
   const {
     touched,
-    errors,
     handleSubmit,
-    values
   } = props;
   
   return (
@@ -98,6 +95,7 @@ const FormikSignUp = withFormik ({
       .then(res => {
         console.log(res.data)
         setStatus(res.data)
+        alert('Registration Successful!')
       })
       .catch(err => console.error(err))
   }
