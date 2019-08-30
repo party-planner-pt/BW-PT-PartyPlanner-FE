@@ -13,10 +13,10 @@ import FoodList from "./components/potluck-page/FoodList";
 
 function App() {
 
-  const [foodItems, setFoodItems] = useState([{recipe_name: ""}]);
+  const [foodList, setFoodList] = useState(["first food"]);
 
-  const displayFoodList = foodItem => {
-    setFoodItems([foodItem, ...foodItems ]) 
+  const displayFoodList = food => {
+    setFoodList([food, ...foodList ]) 
   }
 
   return (
@@ -25,8 +25,9 @@ function App() {
       <Route exact path="/dashboard" component={UserDashboard} />
       <Route path="events/:id" component={Potluck} />
       <Route exact path="events/:id/createpotluckform" component={CreatePotluckForm} />
-      <Route exact path="/createfoodlist" render={(routeProps) => <CreateFoodList {...routeProps} displayFoodList={displayFoodList}/>} />
-      <Route exact path="/foodlist" render={(routeProps) => <FoodList {...routeProps} foodItems={foodItems}/>} />
+      
+      <Route exact path="/createfoodlist" render={(routeProps) => <CreateFoodList {...routeProps} displayFoodList={displayFoodList}/>} />    
+      <Route exact path="/foodlist" render={(routeProps) => <FoodList {...routeProps} foodList={foodList}/>} />
     </div>
   );
 }
