@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { Formik, withFormik } from "formik";
+import React, { useState } from "react";
+import { Formik } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
 import TextField from "@material-ui/core/TextField";
@@ -9,25 +9,29 @@ import {
   StyledForm
 } from "../signup-login/SignUpLoginStyles";
 
-const CreatePotluckForm = () => {
-  const [setMeal] = useState([]);
-  useEffect(() => {
-    axios
-      .post(" ")
-      .then(response => {
-        console.log(response.data);
-        setMeal(response.data);
-      })
-      .catch(error => {
-        console.error("Server Error", error);
-      });
-  }, []);
+const CreatePotluckForm = props => {
+  const [createEvent, setMeal] = useState({
+    event_name: "",
+    date: "",
+    time: "",
+    address: "",
+    city: "",
+    state: ""
+  });
+
+  const handleChange = event => {
+    setMeal({ ...createEvent, [event.target.name]: event.target.value });
+  };
+
+  const handleSubmit = event => {
+    event.preventDefault();
+  };
 
   return (
     <div>
       <h1>Plan Event</h1>
       <Formik
-        values={{
+        initialValues={{
           event_name: "",
           date: "",
           time: "",
@@ -40,6 +44,18 @@ const CreatePotluckForm = () => {
             console.log("Summuting", values);
             setSubmitting(false);
           }, 500);
+
+          axios
+            .post(
+              "https://potluck-planner-bw.herokuapp.com/users/1/events",
+              values
+            )
+            .then(response => {
+              console.log(response);
+              localStorage.setItem("token", response.token);
+              props.history.push("/createfoodlist");
+            })
+            .catch(error => console.log("Server Error", error));
         }}
         validationSchema={Yup.object().shape({
           event_name: Yup.string().required("Event Name is Required"),
@@ -76,9 +92,9 @@ const CreatePotluckForm = () => {
           return (
             <StyledForm onSubmit={handleSubmit}>
               <SignUpWrapper>
-                <label htmlFor="event_name" style={{ textAlign: "left" }}>
+                {/* <label htmlFor="event_name" style={{ textAlign: "left" }}>
                   Event Name
-                </label>
+                </label> */}
                 <TextField
                   id="outlined-full-width"
                   style={{ margin: 25 }}
@@ -94,11 +110,11 @@ const CreatePotluckForm = () => {
                   variant="outlined"
                 />
                 {errors.event_name && touched.event_name && (
-                  <div className="feedback">{errors.username}</div>
+                  <div className="feedback">{errors.event_name}</div>
                 )}
-                <label htmlFor="date" style={{ textAlign: "left" }}>
+                {/* <label htmlFor="date" style={{ textAlign: "left" }}>
                   Date
-                </label>
+                </label> */}
                 <TextField
                   style={{ margin: 25 }}
                   name="date"
@@ -114,9 +130,9 @@ const CreatePotluckForm = () => {
                 {errors.date && touched.date && (
                   <div className="feedback">{errors.date}</div>
                 )}
-                <label htmlFor="time" style={{ textAlign: "left" }}>
+                {/* <label htmlFor="time" style={{ textAlign: "left" }}>
                   Time
-                </label>
+                </label> */}
                 <TextField
                   style={{ margin: 25 }}
                   name="time"
@@ -132,12 +148,13 @@ const CreatePotluckForm = () => {
                 {errors.time && touched.time && (
                   <div className="feedback">{errors.time}</div>
                 )}
-                <label htmlFor="address" style={{ textAlign: "left" }}>
+                {/* <label htmlFor="address" style={{ textAlign: "left" }}>
                   Address
-                </label>
+                </label> */}
                 <TextField
                   style={{ margin: 25 }}
                   name="address"
+                  label="Address"
                   type="text"
                   placeholder="Enter address"
                   value={values.address}
@@ -150,12 +167,13 @@ const CreatePotluckForm = () => {
                 {errors.address && touched.address && (
                   <div className="feedback">{errors.address}</div>
                 )}
-                <label htmlFor="city" style={{ textAlign: "left" }}>
+                {/* <label htmlFor="city" style={{ textAlign: "left" }}>
                   City
-                </label>
+                </label> */}
                 <TextField
                   style={{ margin: 25 }}
                   name="city"
+                  label="City"
                   type="text"
                   placeholder="Enter city"
                   value={values.city}
@@ -168,12 +186,13 @@ const CreatePotluckForm = () => {
                 {errors.city && touched.city && (
                   <div className="feedback">{errors.city}</div>
                 )}
-                <label htmlFor="state" style={{ textAlign: "left" }}>
+                {/* <label htmlFor="state" style={{ textAlign: "left" }}>
                   State
-                </label>
+                </label> */}
                 <TextField
                   style={{ margin: 25 }}
                   name="state"
+                  label="State"
                   type="text"
                   placeholder="Enter state"
                   value={values.state}

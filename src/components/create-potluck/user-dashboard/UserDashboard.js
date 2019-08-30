@@ -6,11 +6,20 @@ import Paper from "@material-ui/core/Paper";
 import Button from "@material-ui/core/Button";
 
 const Events = props => {
-  // const [eventlists, setEvent]=useState([]);
+  const [eventlists, setEvent] = useState();
 
-  // useEffect( ) => {
-  //   axios.get("https://potluck-planner-bw.herokuapp.com/users/1/events", )
-  // }
+  useEffect(() => {
+    axios
+      .get("https://potluck-planner-bw.herokuapp.com/users/1")
+      .then(res => {
+        console.log(res);
+        setEvent(res.data);
+        localStorage.setItem("token", res.data.token);
+        props.history.push("/createpotluckform");
+      })
+      .catch(err => console.log(err.response));
+  }, []);
+
   const useStyles = makeStyles(theme => ({
     root: {
       padding: theme.spacing(3, 2)
