@@ -25,6 +25,15 @@ const CreatePotluckForm = props => {
 
   const handleSubmit = event => {
     event.preventDefault();
+    const values = { 
+      event_name: createEvent.event_name,
+      date: createEvent.date,
+      time: createEvent.time,
+      address: createEvent.address,
+      city: createEvent.city,
+      state: createEvent.state
+    }
+    props.createEventCall(values)
   };
 
   return (

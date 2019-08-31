@@ -4,13 +4,18 @@ import * as Yup from "yup";
 import axios from "axios";
 import TextField from "@material-ui/core/TextField";
 import { SignUpButton, SignUpWrapper, StyledForm } from "./SignUpLoginStyles";
+import LoggedInRouter from "./../LoggedInRouter";
 
 const Login = props => {
   const [thetokens, setToken] = useState({ username: "", password: "" });
 
+  // const [userId, setUserId] = useState({});
+
   const handleChange = event => {
     setToken({ ...thetokens, [event.target.name]: event.target.value });
   };
+
+
 
   const handleSubmit = event => {
     event.preventDefault();
@@ -27,9 +32,11 @@ const Login = props => {
               values
             )
             .then(res => {
-              console.log(res);
-              localStorage.setItem("token", res.data.token);
-              props.history.push("/dashboard");
+              console.log("res", res);
+              // localStorage.setItem("token", res.data.token);
+              // let id = res.data.user_id
+              // setUserId(res.data.user_id)
+              props.history.push(`/createpotluckform`)  
             })
             .catch(err => console.log(err.response));
         }}

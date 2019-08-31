@@ -6,16 +6,19 @@ import Paper from "@material-ui/core/Paper";
 import Button from "@material-ui/core/Button";
 
 const Events = props => {
-  const [eventlists, setEvent] = useState();
+  let id = props.match.params.id
+  let ls = localStorage.getItem("token");
+  console.log("ls", ls)
+  console.log("LS", localStorage)
 
   useEffect(() => {
     axios
-      .get("https://potluck-planner-bw.herokuapp.com/users/1")
+      .post(`https://potluck-planner-bw.herokuapp.com/users/${props.match.params.id}/events`, values )
       .then(res => {
         console.log(res);
         setEvent(res.data);
-        localStorage.setItem("token", res.data.token);
-        props.history.push("/createpotluckform");
+        let id = res.data.event_id
+        props.history.push(`/events/${id}/createpotluckform`);
       })
       .catch(err => console.log(err.response));
   }, []);
