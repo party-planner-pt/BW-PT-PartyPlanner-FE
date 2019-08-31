@@ -1,64 +1,70 @@
-// import React, { useState } from "react";
-// import AddCircleOutline from '@material-ui/icons/AddCircleOutline';
-// import RemoveCircleOutline from '@material-ui/icons/RemoveCircleOutline';
-// import { Link } from 'react-router-dom';
-// import FoodList from "./../potluck-page/FoodList"
+import React, { useState } from 'react';
+import { Formik, Form, Field, FieldArray, withFormik } from 'formik';
+import { Link } from 'react-router-dom';
+import * as Yup from 'yup';
+import axios from 'axios';
+import { TextField } from 'formik-material-ui';
+import "../../App.css";
+import AddCircleOutline from '@material-ui/icons/AddCircleOutline';
+import RemoveCircleOutline from '@material-ui/icons/RemoveCircleOutline';
 
-// function CreateFoodList2(props) {
-//   const [foodItem, setFoodItem] = useState([]);
+const CreateFoodList = (props) => {
+  const [foodItems, setFoodItems] = useState({recipe_name: ""});
+  const id = props.match.params.id;
+  return (
+    <div>
+      <Formik
+        initialValues={{ food: [] }}
+        onSubmit={values => {
+          console.log("FOOD", values);
+          const headers = {
+            'Authorization': localStorage.getItem('token'),
+            'Content-Type': 'application/json',
+          };
+          axios
+              .post(
+                `https://potluck-planner-bw.herokuapp.com/events/${id}/recipes`,
+                values, {header: headers}
+              )
+              .then(res => setFoodItems(res.data))
+              .catch(err => console.log(err.response));  
+        }
+      }
+        render={({ values }) => (
+          <Form>
+            <FieldArray
+              name="food"
+              render={arrayHelpers => (
+                <div>
+                  {values.food && values.food.length > 0 ? (
+                    values.food.map((foodItem, index) => (
+                      <div key={index}>
+                        <Field 
+                          name={`food.${index}`}
+                          component={TextField}
+                        />
+                        <RemoveCircleOutline onClick={() => arrayHelpers.remove(index)}/>
+                        <AddCircleOutline onClick={() => arrayHelpers.insert(index, "")}/>
+                      </div>
+                    ))
+                  ) : (
+                    <button type="button" onClick={() => arrayHelpers.push("")}>
+                      Add a food item
+                    </button>
+                  )}
+                  <div>
+                    <Link to="/foodlist">
+                      <button type="submit">Submit</button>
+                    </Link>
+                    
+                  </div>
+                </div>
+              )}
+            />
+          </Form>
+        )}
+      />
+    </div>
+)};
 
-
-//   function changeHandler(i, event) {
-//     const values = [...foodItem];
-//     values[i].value = event.target.value;
-//     setFoodItem(values);
-//     console.log("fooditem", [...foodItem])
-//   }
-
-//   const submitForm = event => {
-//     event.preventDefault();
-//   const listOfFood = {
-//     ...foodItem
-//   }
-//   console.log("list of food:", listOfFood)
-//     props.displayFoodList(listOfFood);
-//   }
-
-//   function handleAdd() {
-//     const values = [...foodItem];
-//     values.push({ value: null });
-//     setFoodItem(values);
-//   }
-
-//   function handleRemove(i) {
-//     const values = [...foodItem];
-//     values.splice(i, 1);
-//     setFoodItem(values);
-//   }
-//   return (
-//     <div>
-//       {foodItem.map((food, idx) => {
-//         return (
-//           <div key={`${food}-${idx}`}>
-//             <form onSubmit={submitForm}>
-//             <input
-//               type="text"
-//               value={food.value || ""}
-//               onChange={e => changeHandler(idx, e)}
-//             />
-//             <RemoveCircleOutline onClick={() => handleRemove(idx)}/>
-//             </form>
-//           </div>       
-//         );
-//       })}
-//       <button type="button" onClick={() => handleAdd()}>
-//         Add a food item
-//       </button>
-//       <Link to="/foodlist">
-//         <button type="submit">Submit</button>
-//       </Link>
-//     </div>
-//   );
-// }
-
-// export default CreateFoodList2
+export default CreateFoodList

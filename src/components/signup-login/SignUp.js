@@ -1,10 +1,12 @@
 import React from "react";
 import { Field, withFormik, Form } from "formik";
+import { Link } from "react-router-dom";
 import * as Yup from "yup";
 import axios from "axios";
 import { TextField } from "formik-material-ui";
 import { SignUpButton, SignUpWrapper, StyledForm } from "./SignUpLoginStyles";
 import Button from "@material-ui/core/Button";
+
 
 const SignUp = props => {
 
@@ -15,7 +17,7 @@ const SignUp = props => {
   
   return (
     <div>
-      <StyledForm onSubmit={handleSubmit}>
+      <StyledForm>
         <SignUpWrapper>
           <Field
             type="text"
@@ -67,7 +69,10 @@ const SignUp = props => {
         <button variant="contained" color="primary" component="button">
           Sign Up
         </button>
-        <p>Already registered? Login</p>
+        <p>Already registered?</p>
+            <Link to="/users/login">
+               Login
+            </Link>
       </StyledForm>
     </div>
   )
